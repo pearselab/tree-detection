@@ -7,7 +7,7 @@ library(EBImage)
 require('EBImage')
 
 #loading image file
-Image <- readImage('C:/Users/Michael/Documents/GitHub/tree-detection/gis/nasmp-background-images/first_transect-google.png')
+Image <- readImage('C:/Users/Michael/Documents/GitHub/tree-detection/gis/nasmp-background-images/third_transect-google.png')
 display(Image)
 
 # changing the viewing frame of the image
@@ -54,3 +54,68 @@ display(imask, all = true)
 segmented = paintObjects(cmask,Image,col = 'red',thick=TRUE)
 segmented= paintObjects(Image_th, segmented, col='blue',thick=TRUE)
 display(segmented,all=TRUE)
+
+#raster 
+#mean distribution by pixels
+third_transect <- 'C:/Users/Michael/Documents/GitHub/tree-detection/gis/nasmp-background-images/third_transect-google.png'
+Sat_Image <- 'C:/Users/Michael/Documents/GitHub/tree-detection/Test Satalitte image/q0421_sw_naip2016_rgb.tiff'
+
+
+detectTree <- function(images, x, y){
+  #loading image file
+  Image <- readImage(images,native=TRUE)
+  display(Image)
+
+  
+  # changing the viewing frame of the image
+  Image <- Image[0:y, 0:x,]
+  #display(Image)
+  #The image must be in grayscale. Change to grayscale
+  colorMode(Image) <- Grayscale
+  #display(Image)
+  #Thresholding the image using the otsu function.
+  threshold <- otsu(Image)
+  
+  #Will i am not sure what is going on here.
+  #If i understand it correctly, it is combining all the frames and thresholds into one image using the mapply function we learned
+  #about the other day in class. Could you clarify this step for me? thanks.
+  Image_th <-combine( mapply(function(frame, th) frame > th, getFrames(Image), threshold, SIMPLIFY=FALSE) )
+  #display(Image_th, all=TRUE)
+  Image_th=opening(Image_th, makeBrush(3,shape = 'disc'))
+  Image_th = fillHull(Image_th)
+  Image_th = bwlabel(Image_th)
+  #table(Image_th)
+  #display(colorLabels(Image_th), all=TRUE)
+  imask = opening(Image>.1, makeBrush(3,shape = 'disc'))
+  cmask = propagate(Image, seeds=Image_th, mask = imask)
+  #display(imask, all = true)
+  segmented = paintObjects(cmask,Image,col = "red",thick=TRUE)
+  segmented= paintObjects(Image_th, segmented, col='blue',thick=TRUE)
+  display(segmented,all=TRUE)
+  return(segmented)
+}
+
+
+Image <- readImage(third_transect)
+satImages <- readImage(Sat_Image)
+detectTree(third_transect,100,100)
+
+
+split_image <- function(image){
+  size<-dim(detectTree(image))
+  print(size)
+  test<-(size[1]/400)+1
+  test2<-(size[2]/400)+1
+  for(i in 1:test){
+    for(j in 1:test2){
+      detectTree(third_transect,i*400,j*400)
+    }
+  }
+}
+
+
+size <-dim(Image)
+print(size)
+print(satImages)
+detectTree(Sat_Image,1000,1000)
+
