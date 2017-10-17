@@ -63,7 +63,7 @@ Sat_Image <- 'C:/Users/Michael/Documents/GitHub/tree-detection/Test Satalitte im
 
 detectTree <- function(images, x, y){
   #loading image file
-  Image <- readImage(images,native=TRUE)
+  Image <- readImage(images,convert=TRUE)
   display(Image)
 
   
@@ -97,10 +97,11 @@ detectTree <- function(images, x, y){
 
 
 Image <- readImage(third_transect)
-satImages <- readImage(Sat_Image)
+satImages <- readImage(Sat_Image,convert=TRUE)
 detectTree(third_transect,100,100)
+detectTree(satImages,100,100)
 
-
+print()
 split_image <- function(image){
   size<-dim(detectTree(image))
   print(size)
