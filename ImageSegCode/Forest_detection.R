@@ -118,5 +118,5 @@ split_image <- function(image){
 size <-dim(Image)
 print(size)
 print(satImages)
-detectTree(Sat_Image,1000,1000)
+detectTree(Sat_Image,200,200)
 
