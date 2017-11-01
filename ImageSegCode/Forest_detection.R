@@ -1,6 +1,6 @@
 #how to download the EBImage library
-source("https://bioconductor.org/biocLite.R")
-biocLite("EBImage")
+#source("https://bioconductor.org/biocLite.R")
+#biocLite("EBImage")
 
 #You will need to use the EBImage library
 library(EBImage)
@@ -61,14 +61,15 @@ third_transect <- 'C:/Users/Michael/Documents/GitHub/tree-detection/gis/nasmp-ba
 Sat_Image <- 'C:/Users/Michael/Documents/GitHub/tree-detection/Test Satalitte image/q0421_sw_naip2016_rgb.tiff'
 
 
-detectTree <- function(images, x, y){
+detectTree <- function(images){
   #loading image file
   Image <- readImage(images,convert=TRUE)
   display(Image)
 
   
   # changing the viewing frame of the image
-  Image <- Image[0:y, 0:x,]
+  
+  ##Image <- Image[0:y, 0:x,]
   #display(Image)
   #The image must be in grayscale. Change to grayscale
   colorMode(Image) <- Grayscale
@@ -99,9 +100,9 @@ detectTree <- function(images, x, y){
 Image <- readImage(third_transect)
 satImages <- readImage(Sat_Image,convert=TRUE)
 detectTree(third_transect,100,100)
-detectTree(satImages,100,100)
+detectTree(Sat_Image)
 
-print()
+##Attempt to split image dynamically
 split_image <- function(image){
   size<-dim(detectTree(image))
   print(size)
@@ -115,8 +116,13 @@ split_image <- function(image){
 }
 
 
-size <-dim(Image)
-print(size)
-print(satImages)
-detectTree(Sat_Image,200,200)
+##size <-dim(Image)
+##print(size)
+##print(satImages)
+detectTree(Sat_Image)
+#hist(detectTree(Sat_Image,1000,1000))
+#use functional programming to split image based on lists that the user provides.
+map(detectTree,listcol,listrow)
 
+
+Map(detectTree,)
