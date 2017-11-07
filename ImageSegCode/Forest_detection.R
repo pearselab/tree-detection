@@ -7,11 +7,11 @@ library(EBImage)
 require('EBImage')
 
 #loading image file
-Image <- readImage('C:/Users/Michael/Documents/GitHub/tree-detection/gis/nasmp-background-images/third_transect-google.png')
+Image <- readImage('../gis/nasmp-background-images/third_transect-google.png')
 display(Image)
 
 # changing the viewing frame of the image
-Image <- Image[0:800, 0:800,]
+Image <- Image[0:801, 0:801,]
 display(Image)
 #The image must be in grayscale. Change to grayscale
 colorMode(Image) <- Grayscale
@@ -105,17 +105,18 @@ detectTree(Sat_Image)
 split_image <- function(image,x){
     coltest <- seq(1,ncol(image),by=x)
     rowtest <- seq(1,nrow(image),by=x)
-    new_image <-matrix(ncol=length(coltest), nrow=1)
     coltestsize <- length(seq(1,ncol(image),by=x))
     rowtestsize <- length(seq(1,nrow(image),by=x))
+    output <- vector("list", length(coltestsize)*length(rowtestsize))
+    tracker <- 1
     for(i in 1:(coltestsize-1)){
-      for(j in 1:(rowtestsize-1) ){
-        append(new_image,image[coltest[i]:coltest[i+1],rowtest[j]:rowtest[j+1]])
-        
-      }
+        for(j in 1:(rowtestsize-1) ){
+            output[[tracker]] <- image[coltest[i]:coltest[i+1],rowtest[j]:rowtest[j+1],]
+            tracker <- tracker + 1
+        }
     }
-  return(new_image)
-  }
+    return(output)
+}
   
 
 
@@ -127,4 +128,4 @@ split_image <- function(image,x){
 #use functional programming to split image based on lists that the user provides.
 detectTree(Sat_Image)
 
-mcMap(detectTree,split_image(Sat_Image,14),cores = 4)
+mcMap(detectTree,split_image(Sat_Image,14),mc.cores = 4)
