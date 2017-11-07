@@ -101,28 +101,30 @@ Image <- readImage(third_transect)
 satImages <- readImage(Sat_Image,convert=TRUE)
 detectTree(third_transect,100,100)
 detectTree(Sat_Image)
-
 ##Attempt to split image dynamically
-split_image <- function(image){
-  size<-dim(detectTree(image))
-  print(size)
-  test<-(size[1]/400)+1
-  test2<-(size[2]/400)+1
-  for(i in 1:test){
-    for(j in 1:test2){
-      detectTree(third_transect,i*400,j*400)
+split_image <- function(image,x){
+    coltest <- seq(1,ncol(image),by=x)
+    rowtest <- seq(1,nrow(image),by=x)
+    new_image <-matrix(ncol=length(coltest), nrow=1)
+    coltestsize <- length(seq(1,ncol(image),by=x))
+    rowtestsize <- length(seq(1,nrow(image),by=x))
+    for(i in 1:(coltestsize-1)){
+      for(j in 1:(rowtestsize-1) ){
+        append(new_image,image[coltest[i]:coltest[i+1],rowtest[j]:rowtest[j+1]])
+        
+      }
     }
+  return(new_image)
   }
-}
+
 
 
 ##size <-dim(Image)
 ##print(size)
 ##print(satImages)
-detectTree(Sat_Image)
+
 #hist(detectTree(Sat_Image,1000,1000))
 #use functional programming to split image based on lists that the user provides.
-map(detectTree,listcol,listrow)
+detectTree(Sat_Image)
 
-
-Map(detectTree,)
+mcMap(detectTree,split_image(Sat_Image,14),cores = 4)
