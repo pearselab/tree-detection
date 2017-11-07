@@ -116,7 +116,7 @@ split_image <- function(image,x){
     }
   return(new_image)
   }
-
+  
 
 
 ##size <-dim(Image)
