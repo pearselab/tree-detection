@@ -117,13 +117,6 @@ split_image <- function(image,x){
   return(new_image)
   }
   
-
-
-##size <-dim(Image)
-##print(size)
-##print(satImages)
-
-#hist(detectTree(Sat_Image,1000,1000))
 #use functional programming to split image based on lists that the user provides.
 detectTree(Sat_Image)
 
