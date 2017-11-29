@@ -28,19 +28,14 @@ split_image <- function(image,x){
   output <- vector("list", length(coltestsize)*length(rowtestsize))
   tracker <- 1
   for(i in 1:(coltestsize-1)){
-    for(j in 1:(rowtestsize-1) ){
-      append(new_image,image[coltest[i]:coltest[i+1],rowtest[j]:rowtest[j+1]])
-      
-    }
-    for(j in 1:(rowtestsize-1) ){
+        for(j in 1:(rowtestsize-1) ){
       output[[tracker]] <- image[coltest[i]:coltest[i+1],rowtest[j]:rowtest[j+1],]
       tracker <- tracker + 1
     }
   }
-  return(new_image)
+  return(output)
 }
-return(output)
-}
+
 
 
 mcMap(detectTree,split_image(Sat_Image,14),cores = 4)
