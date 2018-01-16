@@ -122,3 +122,6 @@ split_image <- function(image,x){
 detectTree(Sat_Image)
 
 mcMap(detectTree,split_image(Sat_Image,14),mc.cores = 4)
+
+
+

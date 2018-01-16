@@ -1,5 +1,7 @@
 library(EBImage)
 require('EBImage')
+library(parallel)
+require('parallel')
 detectTree <- function(images){
   #loading image file
   Image <- readImage(images,convert=TRUE)
@@ -37,6 +39,8 @@ split_image <- function(image,x){
 }
 
 
-
+Sat_Image <- 'C:/Users/Michael/Documents/GitHub/tree-detection/Test Satalitte image/q0421_sw_naip2016_rgb.tiff'
+satImages <- readImage(Sat_Image,convert=TRUE)
+split_image(Sat_Image,14)
 mcMap(detectTree,split_image(Sat_Image,14),cores = 4)
 

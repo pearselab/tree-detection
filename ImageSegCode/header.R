@@ -19,7 +19,9 @@ library(EBImage)
              if(plot)
                   display(colorLabels(labels))
           return(table(labels))
-  }
-  
+   }
+   Image <- readImage('../gis/nasmp-background-images/third_transect-google.png')
+   display(Image)
+segment.image(Image,"watershed",plot = TRUE)  
   
   
